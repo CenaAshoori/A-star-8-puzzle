@@ -74,7 +74,7 @@ just care about **h cost(Heuristic)** value.
 
 ## What Is The Difference Between IDS(Iterative deepening Search) And IDA(Iterative deepening A*)? 
 
-![img_1.png](img.png)
+![img_1.png](https://github.com/CenaAshoori/A-star-8-puzzle/blob/main/img.png?raw=true)
 (left = IDS  right = IDA*)
 
 As you can see in above picture, in IDS(left) we put limitation on depth of search or actually on **G cost**,
