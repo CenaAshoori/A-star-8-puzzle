@@ -5,7 +5,7 @@ In this repo 8 Puzzle solver , solve your puzzle with A* and IDA*
 ## 8 Puzzle Solver
 
 
-###Quick Start :
+### Quick Start :
 Notice :
 in 8 Puzzle ,we have an empty cell that move in available direction, and in this solver **_assume empty cell as 0_**
 
