@@ -56,9 +56,11 @@ self.f = self.g + self.h
 # alpha = 2 (greedy)
 self.f = 2 * self.h
 ```
+
 ALPHA is float variable and if you put it in range of this numbers:
 -[x] [0 , 1] algorithm is OPTIMAL
 -[ ] (1 , ∞) algorithm going to be GREEDY and it's NOT OPTIMAL
+
 ----
 ## What Is an Optimal Algorithm?
 An OPTIMAL algorithm ,is an algorithm that **_all the TIME_** return the shortest path.
