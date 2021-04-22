@@ -69,7 +69,7 @@ maybe also **Greedy** search give us the shortest path sometimes, but because in
 exist possibility of finding NON-OPTIMAL path(a path that is not the shortest one), because its don't care about 
 the cost that its already paid,so we can't guarantee the path be optimal.
 
-You know , we want to be optimal , in ALL THEM TIME.
+You know , we want to be optimal , in ALL THE TIME.
 
 ## Why Greedy Search Isn't Optimal ?
 Because it forgets its history and don't care about the Cost that its already paid, and it's just looking forward and
