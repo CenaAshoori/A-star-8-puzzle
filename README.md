@@ -58,8 +58,9 @@ self.f = 2 * self.h
 ```
 
 ALPHA is float variable and if you put it in range of this numbers:
--[x] [0 , 1] algorithm is OPTIMAL
--[ ] (1 , ∞) algorithm going to be GREEDY and it's NOT OPTIMAL
+
+- [x] [0 , 1] algorithm is OPTIMAL
+- [ ] (1 , ∞) algorithm going to be GREEDY and it's NOT OPTIMAL
 
 ----
 ## What Is an Optimal Algorithm?
@@ -84,7 +85,7 @@ but in IDA*(right) we put limitation on **F cost (g+h)**.
 
 
 
-### Heuristic One 
+### 1- Heuristic One 
 This heuristic return sum of all Manhattan Distance from current state to goal state.
 
 This heuristic is better than next one , because it gives us more actual Estimation.
@@ -99,7 +100,7 @@ This heuristic is better than next one , because it gives us more actual Estimat
 ````
 
 
-### Heuristic Two
+### 2- Heuristic Two
 This heuristic just count all cells that are not in the correct Position(in comparison with goal state).
 
 
