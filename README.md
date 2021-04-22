@@ -46,6 +46,16 @@ Third variable in this solver is Alpha variable that determined that search algo
 - A* (1)
 - Greedy (2)
 
+```python
+self.f = (2 - alpha) * self.g + alpha * (self.h)
+
+# alpha = 0 (uniform cost)
+self.f = 2 * self.g
+# alpha = 1 (a*)
+self.f = self.g + self.h
+# alpha = 2 (greedy)
+self.f = 2 * self.h
+```
 ALPHA is float variable and if you put it in range of this numbers:
 -[x] [0 , 1] algorithm is OPTIMAL
 -[ ] (1 , ∞) algorithm going to be GREEDY and it's NOT OPTIMAL
@@ -62,7 +72,7 @@ You know , we want to be optimal , in ALL THEM TIME.
 Because it forgets its history and don't care about the Cost that its already paid, and it's just looking forward and
 just care about **h cost(Heuristic)** value.
 
-## What Is The Difference Between IDS(Iterative deepening Search) And IDA(Iterative deepening A*) star 
+## What Is The Difference Between IDS(Iterative deepening Search) And IDA(Iterative deepening A*)? 
 
 ![img_1.png](img.png)
 (left = IDS  right = IDA*)

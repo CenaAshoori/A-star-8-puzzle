@@ -113,3 +113,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 workspace.code-workspace
+.idea/vcs.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/dictionaries
+.idea/A-star-8-puzzle.iml
+.idea/workspace.xml
