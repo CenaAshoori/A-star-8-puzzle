@@ -16,7 +16,8 @@ class Node:
             self.col = col
             # Alpha is the diffrence between Greedy and A*
             self.f = (2 - alpha) * self.g + alpha * (self.h)
-
+        def get_matrix(self):
+            return self.mat.copy()
         def h1(self, curent_mat, dic):
             counter = 0
             for row in range(len(self.mat)):

@@ -1,6 +1,5 @@
 from node import Node
 
-
 class Puzzle:
     queue: list["Node"] = []
     children_counter = 0
@@ -27,35 +26,32 @@ class Puzzle:
                     return (r, c)
 
     def find_best_node(self) -> (int, "Node"):
-        best_node = (0, self.queue[0])
+        j = 0
         for i in range(len(self.queue)):
-            if self.queue[i].f < best_node[1].f:
-                best_node = (i, self.queue[i])
-        return best_node
+            if self.queue[i].f < self.queue[j].f:
+                j = i
+        return self.queue.pop(j)
 
     def create_children(self, node: "Node"):
         row, col = node.row, node.col
-        node_mat = node.mat
         for dir in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
             new_row = row + dir[0]
             new_col = col + dir[1]
             if 0 <= new_row < self.mat_height and 0 <= new_col < self.mat_width:
-                new_mat = [row[:] for row in node_mat]
-                temp_var = node_mat[row][col]
-                new_mat[row][col] = node_mat[new_row][new_col]
-                new_mat[new_row][new_col] = temp_var
-
+                new_mat = [row[:] for row in node.mat]
+                new_mat[row][col] = new_mat[new_row][new_col]
+                new_mat[new_row][new_col] = 0
 
                 if self.is_not_duplicated(node.parent, new_mat):
-                    node = Node(node, new_row, new_col, new_mat, self.goal_mat, node.g + 1, self.alpha, self.val)
+                    new_node = Node(node, new_row, new_col, new_mat, self.goal_mat, node.g + 1, self.alpha, self.val)
                     self.children_counter += 1
 
                     # IF Algorithm Was IDA STAR
                     if self.IDASTAR:
-                        if node.f <= self.max_f:
-                            self.queue.append(node)
+                        if new_node.f <= self.max_f:
+                            self.queue.append(new_node)
                     else:
-                        self.queue.append(node)
+                        self.queue.append(new_node)
 
     def is_not_duplicated(self, node: "Node", new_mat: list[list[int]]) -> bool:
         while node != None:
@@ -67,9 +63,11 @@ class Puzzle:
     def print_path(self):
         ans_list: list["Node"] = []
         node = self.answer_node
-        while node != None:
-            ans_list.append(node)
+        ans_list.append(node)
+        while node.parent != None:
             node = node.parent
+            ans_list.append(node)
+
         ans_list.reverse()
         for node in ans_list:
             for row in node.mat:
@@ -88,12 +86,11 @@ class Puzzle:
             while len(self.queue) != 0:
                 # find_best_node return a tuple with (index , node)
                 best_node = self.find_best_node()
-                if best_node[1].h == 0:
-                    self.answer_node = best_node[1]
+                if best_node.h == 0:
+                    self.answer_node = best_node
                     self.queue.clear()
                     return self
-                self.create_children(best_node[1])
-                self.queue.pop(best_node[0])
+                self.create_children(best_node)
             if not is_idastar:
                 return
 
@@ -101,13 +98,13 @@ class Puzzle:
 if __name__ == "__main__":
     start = [
         [1, 2, 3],
-        [4, 0, 5],
+        [0, 4, 5],
         [7, 8, 6],
     ]
     goal = [
-        [4, 5, 0],
         [1, 2, 3],
         [7, 8, 6],
+        [4, 5, 0],
     ]
-    Puzzle(start, goal, .6).solve().print_path()
+    Puzzle(start, goal, 1).solve().print_path()
     # Puzzle(start, goal, 1).solve(is_idastar=True, iterate=27).print_path()
