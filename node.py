@@ -6,12 +6,12 @@ class Node:
         f: int
 
         def __init__(
-                self, parent: "Node", row, col, mat: list[list[int]], mat_goal: list[list[int]], g: int, alpha: float, val):
+                self, parent: "Node", row, col, mat: list[list[int]], mat_goal: list[list[int]], g: int, alpha: float, dic):
             self.parent = parent
             self.mat = mat
             self.g = g
-            # self.h = self.h1(mat,val)
-            self.h = self.h2(mat_goal )
+            self.h = self.h1(mat,dic)
+            # self.h = self.h2(mat_goal)
             self.row = row
             self.col = col
             # Alpha is the diffrence between Greedy and A*

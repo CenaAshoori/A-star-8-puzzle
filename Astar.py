@@ -1,4 +1,6 @@
 from node import Node
+import sys
+
 
 class Puzzle:
     queue: list["Node"] = []
@@ -12,23 +14,26 @@ class Puzzle:
         self.mat_height = len(self.start_mat)
         self.mat_width = len(start_mat[0])
         self.val = {}
-        self.IDASTAR = False
-        self.max_f = 1
+        self.is_iterative_search = False
+        
         row, col = self.find_start_point()
         # create First Node
-        self.start_node = Node(None, row, col, start_mat, goal_mat, 0, alpha, self.val)
+        self.start_node = Node(None, col, row, start_mat, goal_mat, 0, alpha, self.val)
+        
+        self.max_f = self.start_node.f
+        self.last_chance = sys.maxsize
 
     def find_start_point(self):
         for r in range(len(self.goal_mat)):
             for c in range(len(self.goal_mat[0])):
                 self.val[self.goal_mat[r][c]] = (r, c)
-                if self.start_mat[r][c] == 0:
-                    return (r, c)
 
-    def find_best_node(self) -> (int, "Node"):
+        return self.val[0]
+
+    def find_best_node(self):
         j = 0
         for i in range(len(self.queue)):
-            if self.queue[i].f < self.queue[j].f:
+            if self.queue[i].f <= self.queue[j].f:
                 j = i
         return self.queue.pop(j)
 
@@ -43,13 +48,15 @@ class Puzzle:
                 new_mat[new_row][new_col] = 0
 
                 if self.is_not_duplicated(node.parent, new_mat):
-                    new_node = Node(node, new_row, new_col, new_mat, self.goal_mat, node.g + 1, self.alpha, self.val)
+                    new_node = Node(node, new_row, new_col, new_mat, self.goal_mat, node.g + 1, self.alpha, self.val,)
                     self.children_counter += 1
 
                     # IF Algorithm Was IDA STAR
-                    if self.IDASTAR:
+                    if self.is_iterative_search:
                         if new_node.f <= self.max_f:
                             self.queue.append(new_node)
+                        else:
+                            self.last_chance = min(new_node.f, self.last_chance + 1 )
                     else:
                         self.queue.append(new_node)
 
@@ -60,7 +67,7 @@ class Puzzle:
             node = node.parent
         return True
 
-    def print_path(self):
+    def get_path(self) -> list["Node"]:
         ans_list: list["Node"] = []
         node = self.answer_node
         ans_list.append(node)
@@ -69,6 +76,10 @@ class Puzzle:
             ans_list.append(node)
 
         ans_list.reverse()
+        return ans_list
+
+    def print_path(self):
+        ans_list = self.get_path()
         for node in ans_list:
             for row in node.mat:
                 print(row)
@@ -76,12 +87,12 @@ class Puzzle:
         print(f"All Children : {self.children_counter}")
         print(f"Best Path Length: {len(ans_list) - 1}")
 
-    def solve(self, is_idastar=False, iterate=1):
+    def solve(self, is_iterative_search=False):
         self.children_counter = 0
-        self.max_f = 0
-        self.IDASTAR = is_idastar
+        self.is_iterative_search = is_iterative_search
+
         while True:
-            self.max_f += iterate
+            print(f"Max_f: {self.last_chance}")
             self.queue.append(self.start_node)
             while len(self.queue) != 0:
                 # find_best_node return a tuple with (index , node)
@@ -91,20 +102,29 @@ class Puzzle:
                     self.queue.clear()
                     return self
                 self.create_children(best_node)
-            if not is_idastar:
-                return
 
+            if is_iterative_search:
+                self.max_f = self.last_chance
+                # self.next_f_bound = self.max_f
+            else :
+                return
 
 if __name__ == "__main__":
     start = [
-        [1, 2, 3],
-        [0, 4, 5],
-        [7, 8, 6],
+        [8,6,7],
+        [2,5,4],
+        [3,0,1],
     ]
+    # start = [
+    #     [6,4,7],
+    #     [8,5,1],
+    #     [3,0,2],
+    # ]
     goal = [
-        [1, 2, 3],
-        [7, 8, 6],
-        [4, 5, 0],
+        [6,4,7],
+        [8,5,0],
+        [3,2,1],
     ]
-    Puzzle(start, goal, 1).solve().print_path()
-    # Puzzle(start, goal, 1).solve(is_idastar=True, iterate=27).print_path()
+    # Puzzle(start, goal, 1).solve().print_path()
+    Puzzle(start, goal, 1).solve(is_iterative_search=True).print_path()
+
